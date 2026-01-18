@@ -3,18 +3,22 @@
 if [ "$1" == "" ]; then
   echo Error: No profile specified
   exit 1
-elif [ ! -f "$1" ]; then
-  echo Error: Profile not found: $1
+fi
+
+SCRIPT_DIR="$(dirname -- "${BASH_SOURCE[0]}")"
+PROFILE_FILE="$SCRIPT_DIR/profiles/rsynker.$1.sh"
+if [ ! -f "$PROFILE_FILE" ]; then
+  echo Error: Profile file not found: \"$PROFILE_FILE\"
   exit 1
 fi
 
-source $1
+source $PROFILE_FILE
 
 basename=`basename "$0"`
-process_count=$(pgrep -cf "$basename $1")
+process_count=$(pgrep -cf "$rsynker.$1.sh")
 [ $process_count -gt 1 ] && exit 0
 
-excludes=$(cat "$1"|grep ^EXCLUDE=|grep -v ^EXCLUDE=$|sed s/^EXCLUDE/--exclude/)
+excludes=$(cat "$PROFILE_FILE"|grep ^EXCLUDE=|grep -v ^EXCLUDE=$|sed s/^EXCLUDE/--exclude/)
 if [ "$IS_DRYRUN" == true ]; then
   rsync -avns --delete -e "ssh -p $BACKUP_PORT" $excludes "$SOURCE_DIR" "$BACKUP_DIR"
   exit 0

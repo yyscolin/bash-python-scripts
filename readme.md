@@ -1,23 +1,26 @@
 # Bash and Python Scripts
 Simple scripts to help with your linux administration.
-- Clone this repository
-- Make a copy of the respective sample settings files from `profiles.sample` into the `profiles` folder. For example, if you want to use the ping.sh script: `cp ./MiniBash/profiles.sample/ping.sh ./MiniBash/profiles/ping.example.sh`
-- Edit the settings file accordingly
-- Run the script like this: `./MiniBash/ping.sh ./MiniBash/profiles/ping.example.sh`
-- Except for synker2: Use profile name instead of the path: `./rsynker2 example [subfolder]`
-- Optional: Add into your crontab
+- Clone this repository.
+- Decide the mini script you need, e.g. `mysqldump`.
+- Think of a profile name, e.g. the database name to be backup-ed (for mysqldump).
+  - Only ddns mini script doesn't require a profile name and is optional.
+- Make a copy of the respective sample settings files from `profiles.sample` into the `profiles` folder. For example, if you want to use the ping.sh script: `cp ./profiles.sample/ping.example.sh ./profiles/ping.<profile>.sh`.
+  - The profile file's name must be `<script>/<profile>.sh`, e.g. `mysqldump/database1.sh`.
+  - Profile naming for the ddns mini script is optional and can be simply named `./profiles/ddns.sh`.
+- Edit the settings file accordingly.
+- Run the script like this: `./ping.sh <profile>`.
+  - Profile naming for the ddns mini script is optional and can be executed by `./ddns.sh`, assuming `./profiles/ddns.sh` is set.
+- Optional: Add the command into your crontab.
+  - Note: rsynker2 is interactive and should not be in the crontab.
 
 ## ddns.sh
 A simple recurring script to check if your dynamic public IP address has been changed.
 
 If a change is detected:
-- a DNS record in Cloudflare can be changed.
-- a notification can be sent from a Telegram bot.
+- a DNS record in CloudFlare can be changed.
+- [optional] a notification can be sent from a Telegram bot.
 
-Notes:
-- To use this script, copy `ddns.env.sample` to `ddns.env` and simply run the script using the command `ddns.sh`.
-- Optionally, to specify a profile, copy `ddns.env.sample` to `ddns.<profile_name>.env` and use `ddns.sh <profile_name>`.
-- This script runs continuously in the background. Do not add to crontab.
+# Mini Scripts
 
 ## mysqldump.sh
 Creates backup for mysql databases compressed into .tar.7z and then sent to a folder.

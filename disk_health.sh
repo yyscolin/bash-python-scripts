@@ -3,12 +3,16 @@
 if [ "$1" == "" ]; then
   echo Error: No profile specified
   exit 1
-elif [ ! -f "$1" ]; then
-  echo Error: Profile not found: $1
+fi
+
+SCRIPT_DIR="$(dirname -- "${BASH_SOURCE[0]}")"
+PROFILE_FILE="$SCRIPT_DIR/profiles/rsynker.$1.sh"
+if [ ! -f "$PROFILE_FILE" ]; then
+  echo Error: Profile file not found: \"$PROFILE_FILE\"
   exit 1
 fi
 
-source $1
+source $PROFILE_FILE
 
 for disk in $DISKS; do
   status=$(/usr/sbin/smartctl -H $disk|grep "^SMART overall-health self-assessment test result:"|cut -d: -f2)

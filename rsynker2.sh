@@ -20,12 +20,12 @@ rsync_sync(){
 }
 
 
-SCRIPT_DIR="$(dirname -- "${BASH_SOURCE[0]}")"
 if [ "$1" == "" ]; then
   echo Error: No profile specified
   exit 1
 fi
 
+SCRIPT_DIR="$(dirname -- "${BASH_SOURCE[0]}")"
 PROFILE_FILE="$SCRIPT_DIR/profiles/rsynker2.$1.sh"
 if [ ! -f "$PROFILE_FILE" ]; then
   echo Error: Profile file not found: \"$PROFILE_FILE\"

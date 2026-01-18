@@ -10,15 +10,21 @@ if ! command -v mysqldump &>/dev/null; then
   exit 1
 fi
 
-source $1
-
 if [ "$1" == "" ]; then
   echo Error: No profile specified
   exit 1
-elif [ ! -f "$1" ]; then
-  echo Error: Profile not found: $1
+fi
+
+SCRIPT_DIR="$(dirname -- "${BASH_SOURCE[0]}")"
+PROFILE_FILE="$SCRIPT_DIR/profiles/rsynker.$1.sh"
+if [ ! -f "$PROFILE_FILE" ]; then
+  echo Error: Profile file not found: \"$PROFILE_FILE\"
   exit 1
-elif [ -z "$BACKUP_NAME" ]; then
+fi
+
+source $PROFILE_FILE
+
+if [ -z "$BACKUP_NAME" ]; then
   echo Error: Option must be set: BACKUP_NAME
   exit 1
 elif [ -z "$BACKUP_DATABASE" ]; then

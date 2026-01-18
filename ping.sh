@@ -3,12 +3,16 @@
 if [ "$1" == "" ]; then
   echo Error: No profile specified
   exit 1
-elif [ ! -f "$1" ]; then
-  echo Error: Profile not found: $1
+fi
+
+SCRIPT_DIR="$(dirname -- "${BASH_SOURCE[0]}")"
+PROFILE_FILE="$SCRIPT_DIR/profiles/rsynker.$1.sh"
+if [ ! -f "$PROFILE_FILE" ]; then
+  echo Error: Profile file not found: \"$PROFILE_FILE\"
   exit 1
 fi
 
-source $1
+source $PROFILE_FILE
 
 function send_message() {
   local message=$1
@@ -23,7 +27,7 @@ function send_message() {
 if [ $? == 0 ]; then
   if [ "$last_notified_at" != "" ]; then
     send_message "Successfully pinged $PING_HOST"
-    sed -i "/^last_notified_at=.*/d" "$1"
+    sed -i "/^last_notified_at=.*/d" "$PROFILE_FILE"
   fi
   exit 0
 fi
@@ -37,5 +41,5 @@ fi
 
 if [ "$message" != "" ]; then
   send_message "$message"
-  echo "last_notified_at=$current_timestamp" >> "$1"
+  echo "last_notified_at=$current_timestamp" >> "$PROFILE_FILE"
 fi
