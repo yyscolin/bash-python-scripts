@@ -1,9 +1,10 @@
-# Mini Bash Scripts
+# Bash and Python Scripts
 Simple scripts to help with your linux administration.
 - Clone this repository
-- Make a copy of the respective sample settings files from `profiles.sample` into the `profiles` folder. For example, if you want to use the ping.sh script: `cp ./MiniBash/profiles.sample/ping.sh ./MiniBash/profiles/ping.exmaple.sh`
+- Make a copy of the respective sample settings files from `profiles.sample` into the `profiles` folder. For example, if you want to use the ping.sh script: `cp ./MiniBash/profiles.sample/ping.sh ./MiniBash/profiles/ping.example.sh`
 - Edit the settings file accordingly
-- Run the script like this: `./MiniBash/ping.sh ./MiniBash/profiles/ping.exmaple.sh`
+- Run the script like this: `./MiniBash/ping.sh ./MiniBash/profiles/ping.example.sh`
+- Except for synker2: Use profile name instead of the path: `./rsynker2 example [subfolder]`
 - Optional: Add into your crontab
 
 ## ddns.sh
@@ -36,6 +37,10 @@ This script is equivalent to using the rsync command with the `-a` and `--delete
 Options:
 - You can add as many `EXCLUDE` into the script to `--exclude` their patterns.
 - You may set the `IS_DRYRUN` option to `true`. This is the same as using the `-n` or `--dry-run` option for the rsync command.
+
+## rsynker2.sh
+An interactive way to execute rsync while automatically ignoring subfolders like `venv` or `node-modules`.
+Execute command: `./rsynker2.sh <push|pull> [subfolder]`.
 
 ## disk_health.sh
 A simple cronjob script to check the SMART overall-health self-assessment test result of your disks, which is the equivalent of `smartctl -H /dev/sdX`. If the result is anything other than `PASSED`, a notification will be sent from a Telegram bot.
