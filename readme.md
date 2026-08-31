@@ -13,6 +13,8 @@ Simple scripts to help with your linux administration.
 - Optional: Add the command into your crontab.
   - Note: rsynker2 is interactive and should not be in the crontab.
 
+# Mini Scripts
+
 ## ddns.sh
 A simple recurring script to check if your dynamic public IP address has been changed.
 
@@ -20,7 +22,18 @@ If a change is detected:
 - a DNS record in CloudFlare can be changed.
 - [optional] a notification can be sent from a Telegram bot.
 
-# Mini Scripts
+## dnsmasq-reload.sh
+Loops through a given list of ip addresses:
+- Using the `nc` command, find the first ip where a given port no is reachable
+- Checks if the ip address matches the entry in a given dnsmasq host file
+- If the ip address is different, update the host file and reload dnsmasq service
+
+<b>Notes</b>:
+- The host file must only have ONE entry:
+  - `<ip_address> <host_name>`
+- The user running the script must have write permission to the host file
+- The user running the script must have the following entry in visudo:
+  - `<username> ALL=(root) NOPASSWD: /usr/bin/systemctl reload dnsmasq.service`
 
 ## mysqldump.sh
 Creates backup for mysql databases compressed into .tar.7z and then sent to a folder.
